@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f2ff;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(142, 68, 173, 0.2);
+        }
+        
+        h1 {
+            color: #8e44ad;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .welcome-message {
+            color: #8e44ad;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .form-section h2 {
+            color: #8e44ad;
+            margin-top: 0;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        input:focus {
+            border-color: #8e44ad;
+            outline: none;
+        }
+        
+        button {
+            background-color: #8e44ad;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #7d3c98;
+        }
+        
+        .result {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f0d9ff;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .result-text {
+            font-size: 24px;
+            color: #8e44ad;
+            margin-bottom: 10px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #8e44ad;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .thank-you {
+            display: none;
+            text-align: center;
+            color: #8e44ad;
+            background-color: #f0d9ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        
+        .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Age Calculator</h1>
+        <div class="welcome-message">
+            <p>Welcome to Age Calculator</p>
+            <p>I am here to help you calculate your age</p>
+        </div>
+        
+        <form id="ageCalculatorForm">
+            <div class="form-section">
+                <h2>Birth Date Information</h2>
+                <div class="form-group">
+                    <label for="birthYear">Enter your birth year:</label>
+                    <input type="number" id="birthYear" min="1900" max="2025" required>
+                    <div class="error" id="birthYearError">Please enter a year between 1900 and 2025</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="birthMonth">Enter your birth month:</label>
+                    <input type="number" id="birthMonth" min="1" max="12" required>
+                    <div class="error" id="birthMonthError">Please enter a month between 1 and 12</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="birthDay">Enter your birth day:</label>
+                    <input type="number" id="birthDay" min="1" max="31" required>
+                    <div class="error" id="birthDayError">Please enter a day between 1 and 31</div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2>Current Date Information</h2>
+                <div class="form-group">
+                    <label for="currentYear">Enter the current year:</label>
+                    <input type="number" id="currentYear" min="1900" max="2025" required>
+                    <div class="error" id="currentYearError">Please enter a year between 1900 and 2025</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="currentMonth">Enter the current month:</label>
+                    <input type="number" id="currentMonth" min="1" max="12" required>
+                    <div class="error" id="currentMonthError">Please enter a month between 1 and 12</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="currentDay">Enter the current day:</label>
+                    <input type="number" id="currentDay" min="1" max="31" required>
+                    <div class="error" id="currentDayError">Please enter a day between 1 and 31</div>
+                </div>
+            </div>
+            
+            <button type="submit">Calculate Age</button>
+        </form>
+        
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p>Calculating your age...</p>
+        </div>
+        
+        <div class="result" id="result">
+            <div class="result-text" id="ageResult"></div>
+        </div>
+        
+        <div class="thank-you" id="thankYou">
+            Thank you for using Age Calculator
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('ageCalculatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate form inputs
+            let isValid = true;
+            
+            // Birth date validation
+            const birthYear = parseInt(document.getElementById('birthYear').value);
+            if (birthYear < 1900 || birthYear > 2025) {
+                document.getElementById('birthYearError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('birthYearError').style.display = 'none';
+            }
+            
+            const birthMonth = parseInt(document.getElementById('birthMonth').value);
+            if (birthMonth < 1 || birthMonth > 12) {
+                document.getElementById('birthMonthError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('birthMonthError').style.display = 'none';
+            }
+            
+            const birthDay = parseInt(document.getElementById('birthDay').value);
+            if (birthDay < 1 || birthDay > 31) {
+                document.getElementById('birthDayError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('birthDayError').style.display = 'none';
+            }
+            
+            // Current date validation
+            const currentYear = parseInt(document.getElementById('currentYear').value);
+            if (currentYear < 1900 || currentYear > 2025) {
+                document.getElementById('currentYearError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('currentYearError').style.display = 'none';
+            }
+            
+            const currentMonth = parseInt(document.getElementById('currentMonth').value);
+            if (currentMonth < 1 || currentMonth > 12) {
+                document.getElementById('currentMonthError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('currentMonthError').style.display = 'none';
+            }
+            
+            const currentDay = parseInt(document.getElementById('currentDay').value);
+            if (currentDay < 1 || currentDay > 31) {
+                document.getElementById('currentDayError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('currentDayError').style.display = 'none';
+            }
+            
+            if (!isValid) {
+                return;
+            }
+            
+            // Date validity check
+            try {
+                // JavaScript months are 0-based, so subtract 1
+                const birthDate = new Date(birthYear, birthMonth - 1, birthDay);
+                // Check if the date is valid by comparing the components
+                if (birthDate.getFullYear() !== birthYear || 
+                    birthDate.getMonth() !== birthMonth - 1 || 
+                    birthDate.getDate() !== birthDay) {
+                    alert("Invalid birth date. Please check the day for the given month and year.");
+                    return;
+                }
+                
+                const currentDate = new Date(currentYear, currentMonth - 1, currentDay);
+                if (currentDate.getFullYear() !== currentYear || 
+                    currentDate.getMonth() !== currentMonth - 1 || 
+                    currentDate.getDate() !== currentDay) {
+                    alert("Invalid current date. Please check the day for the given month and year.");
+                    return;
+                }
+                
+                // Check if birth date is in the future compared to current date
+                if (birthDate > currentDate) {
+                    alert("Birth date cannot be in the future compared to current date.");
+                    return;
+                }
+            } catch (e) {
+                alert("Invalid date. Please check your inputs.");
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('thankYou').style.display = 'none';
+            
+            // Calculate age (same logic as in the Python code)
+            setTimeout(() => {
+                // Hide loading
+                document.getElementById('loading').style.display = 'none';
+                
+                // Calculate age
+                let age = currentYear - birthYear;
+                
+                // Adjust age if birthday hasn't occurred yet this year
+                if ((currentMonth < birthMonth) || 
+                    (currentMonth === birthMonth && currentDay < birthDay)) {
+                    age--;
+                }
+                
+                // Display result
+                document.getElementById('ageResult').textContent = `You are ${age} years old`;
+                document.getElementById('result').style.display = 'block';
+                
+                // Show thank you message after delay
+                setTimeout(() => {
+                    document.getElementById('thankYou').style.display = 'block';
+                }, 3000); // 3 seconds delay instead of 5 for better UX
+            }, 1500); // 1.5 seconds delay for calculation
+        });
+        
+        // Auto-fill current date when the page loads
+        window.addEventListener('load', function() {
+            const today = new Date();
+            document.getElementById('currentYear').value = today.getFullYear();
+            document.getElementById('currentMonth').value = today.getMonth() + 1; // JavaScript months are 0-based
+            document.getElementById('currentDay').value = today.getDate();
+        });
+    </script>
+</body>
+</html>
